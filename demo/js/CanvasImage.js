@@ -1,5 +1,53 @@
-(function() {
-	var matrixData = {
+;(function( window, document, undefined) {
+
+	function CanvasImage(canvas) {
+		this._canvas = canvas;
+		this.canvas = canvas;
+		return this;
+	}
+
+	CanvasImage.prototype.toMatrix = function (imgData,dWidth,) {
+		var matrix = getTwoDimenArray(dWidth, imgData.length / 4 / dWidth);
+		for (var i = 0, length = imgData.length; i < length; i += 4) {
+			var y = Math.floor(i / (4 * dWidth));
+			var x = (i / 4) % dWidth;
+			matrix[x][y] = new matrixFactory(imgData[i], imgData[i + 1], imgData[i + 2], imgData[i + 3]);
+		}
+		return matrix;
+	};
+
+	CanvasImage.prototype.gaussianBlur = function (dx,dy,dWidth,dHeight) {
+		var imageData = this.canvas.getImageData(dx,dy,dWidth,dHeight);
+		var pixel = imageData.data;
+		var matrix = toMatrix(pixel,dWidth);
+		var newMatrix = calculateByMatrix(matrix, this.matrixData);
+		var newpixel = decodeMatrix(newMatrix);
+		for (var i = 0, length = pixel.length; i < length; i += 4) {
+			pixel[i] = newpixel[i];
+			pixel[i + 1] = newpixel[i + 1];
+			pixel[i + 2] = newpixel[i + 2];
+			pixel[i + 3] = newpixel[i + 3];
+		};
+		return;
+	};
+
+	CanvasImage.prototype.edge = edge();
+
+	CanvasImage.prototype.blackAndWhite = blackAndWhite();
+
+	CanvasImage.prototype.colorFlip = colorFlip();
+
+	CanvasImage.prototype.sharpen = sharpen();
+
+	CanvasImage.prototype.medianFilter = medianFilter();
+
+	CanvasImage.prototype.histogramBlance = histogramBlance();
+
+	CanvasImage.prototype.histogramBlanceWithColor = histogramBlanceWithColor();
+
+	CanvasImage.prototype.reset = resetDefault();
+
+	CanvasImage.prototype.matrixData = {
 		gaussianBlur: [
 			[1, 4, 6, 4, 1],
 			[4, 16, 24, 16, 4],
@@ -37,18 +85,6 @@
 		this.G = G;
 		this.B = B;
 		this.A = A;
-	}
-
-	function toMatrix(pixelData, imageWidth) {
-		var matrix = getTwoDimenArray(imageWidth, pixelData.length / 4 / imageWidth);
-
-		for (var i = 0, length = pixelData.length; i < length; i += 4) {
-			var y = Math.floor(i / (4 * imageWidth));
-			var x = (i / 4) % imageWidth;
-			matrix[x][y] = new matrixFactory(pixelData[i], pixelData[i + 1], pixelData[i + 2], pixelData[i + 3]);
-		}
-
-		return matrix;
 	}
 
 	function decodeMatrix(dataMatrix) {
@@ -128,21 +164,6 @@
 		}
 
 		return newMatrix;
-	}
-
-	function gaussianBlur(imageData, width) {
-		var pixel = imageData.data;
-		var matrix = toMatrix(pixel, width);
-		var coreMatrix = matrixData.gaussianBlur;
-		var newMatrix = calculateByMatrix(matrix, coreMatrix);
-		var newpixel = decodeMatrix(newMatrix);
-		for (var i = 0, length = pixel.length; i < length; i += 4) {
-			pixel[i] = newpixel[i];
-			pixel[i + 1] = newpixel[i + 1];
-			pixel[i + 2] = newpixel[i + 2];
-			pixel[i + 3] = newpixel[i + 3];
-		};
-		return;
 	}
 
 	function medianFilter(imageData, width) {
@@ -312,7 +333,6 @@
 		return;
 	}
 
-
 	function RGBtoHSV(r, g, b) {
 		var max = Math.max(r, g, b);
 		var min = Math.min(r, g, b);
@@ -389,18 +409,10 @@
 		}
 
 	}
+	
+	function resetDefault() {
 
-	window.CanvasImage = {
-		toMatrix: toMatrix,
-		calculateByMatrix: calculateByMatrix,
-		decodeMatrix: decodeMatrix,
-		gaussianBlur: gaussianBlur,
-		edge: edge,
-		blackAndWhite: blackAndWhite,
-		colorFlip: colorFlip,
-		sharpen: sharpen,
-		medianFilter: medianFilter,
-		histogramBlance: histogramBlance,
-		histogramBlanceWithColor: histogramBlanceWithColor
 	}
-})()
+
+	window.CanvasImage = CanvasImage;
+})( window, document, undefined);

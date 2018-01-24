@@ -6,9 +6,13 @@ $(document).ready(function() {
 	img.src = "./img/beach.jpg";
 
 	$('.change').click(function() {
-		var context = $('#canvas')[0].getContext('2d');
+		var canvasImage = new CanvasImage($('#canvas')[0]);
+		canvasImage.gaussianBlur()
+		canvasImage.reset();
+
+		var context = .getContext('2d');
 		var imageData = context.getImageData(0, 0, 1080, 900);
-		CanvasImage.blackAndWhite(imageData);
+		CanvasImage.blackAndWhite($('#canvas')[0],left,top,width,height);
 		context.putImageData(imageData, 0, 0);
 	});
 
