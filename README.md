@@ -1,6 +1,6 @@
 # CanvasImageJS #
 
-    A lightweight image processing library for Javascript , based on Canvas.
+A lightweight image processing library for Javascript , based on Canvas.
 
 ## Features
 * toMatrix
