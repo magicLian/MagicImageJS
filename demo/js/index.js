@@ -37,8 +37,7 @@ $(document).ready(function() {
 
 	$('.histogramBlanceWithColor').click(function() {
 		magicImage.histogramBlanceWithColor(0, 0,magicImage.canvas.width,magicImage.canvas.height);
-	})
-
+	});
 
 	$('.removeOneColor').on('click',function () {
 		var colorData = {
@@ -53,7 +52,7 @@ $(document).ready(function() {
 	$('.download').on('click',function() {
 		var href = $('#canvas')[0].toDataURL('image/png').replace("image/png", "image/octet-stream");
 		window.location.href = href;
-	})
+	});
 
 	$('.reset').on('click',function() {
 		magicImage.reset();
@@ -62,7 +61,8 @@ $(document).ready(function() {
 
 function draw(img, width, height) {
 	var canvas = document.getElementById("canvas");
-	magicImage = new MagicImage(canvas);
 	var context = canvas.getContext("2d");
 	context.drawImage(img, 0, 0, canvas.width, canvas.height);
+	magicImage = new MagicImage(canvas);
+
 }
