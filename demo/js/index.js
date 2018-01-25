@@ -1,53 +1,53 @@
-var canvasImage = null;
+var magicImage = null;
 $(document).ready(function() {
 
 	var img = new Image();
 	img.onload = function() {
 		draw(img);
 	};
-	img.src = "./img/game.jpg";
+	img.src = "./img/3.jpg";
 
 	$('.blackAndWhite').on('click',function() {
-		canvasImage.blackWhite(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+		magicImage.blackWhite(0, 0,magicImage.canvas.width,magicImage.canvas.height);
 	});
 
 	$('.gaosi').on('click',function() {
-		canvasImage.gaussianBlur(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+		magicImage.gaussianBlur(0, 0,magicImage.canvas.width,magicImage.canvas.height);
 	});
 
 	$('.edge').on('click',function() {
-		canvasImage.edge(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+		magicImage.edge(0, 0,magicImage.canvas.width,magicImage.canvas.height);
 	});
 
 	$('.flip').on('click',function() {
-		canvasImage.colorFlip(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+		magicImage.colorFlip(0, 0,magicImage.canvas.width,magicImage.canvas.height);
 	});
 
 	$('.sharpen').click(function() {
-		canvasImage.sharpen(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+		magicImage.sharpen(0, 0,magicImage.canvas.width,magicImage.canvas.height);
 	});
 
 	$('.medianFilter').click(function() {
-		canvasImage.medianFilter(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+		magicImage.medianFilter(0, 0,magicImage.canvas.width,magicImage.canvas.height);
 	});
 
 	$('.histogramBlance').click(function() {
-		canvasImage.histogramBlance(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+		magicImage.histogramBlance(0, 0,magicImage.canvas.width,magicImage.canvas.height);
 	});
 
 	$('.histogramBlanceWithColor').click(function() {
-		canvasImage.histogramBlanceWithColor(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+		magicImage.histogramBlanceWithColor(0, 0,magicImage.canvas.width,magicImage.canvas.height);
 	})
 
 
 	$('.removeOneColor').on('click',function () {
 		var colorData = {
-			R : 255,
-			G : 220,
-			B : 59
+			R : 114,
+			G : 90,
+			B : 50
 		},
 		threshold = 50;
-		canvasImage.removeOneColor(0, 0,canvasImage.canvas.width,canvasImage.canvas.height,colorData,threshold);
+		magicImage.removeOneColor(0, 0,magicImage.canvas.width,magicImage.canvas.height,colorData,threshold);
 	});
 
 	$('.download').on('click',function() {
@@ -56,15 +56,13 @@ $(document).ready(function() {
 	})
 
 	$('.reset').on('click',function() {
-		canvasImage.reset();
+		magicImage.reset();
 	});
 });
 
 function draw(img, width, height) {
 	var canvas = document.getElementById("canvas");
-	canvasImage = new CanvasImage($('#canvas')[0]);
+	magicImage = new MagicImage(canvas);
 	var context = canvas.getContext("2d");
-	context.shadowBlur = 20;
-	context.shadowColor = "#DDDDDD";
 	context.drawImage(img, 0, 0, canvas.width, canvas.height);
 }
