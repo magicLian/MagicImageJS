@@ -10,12 +10,6 @@
     overflow: hidden;
 }
 
-.right {
-    position: absolute;
-    left: 200px;
-    top: 110px;
-}
-
 .title {
     font-size: 50px;
     float: left;
@@ -89,7 +83,7 @@ body {
 
 .button {
     padding: 10px;
-    width: 150px;
+    width: 80px;
     height: auto;
     margin: 10px;
     background-color: #222;
