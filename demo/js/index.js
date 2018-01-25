@@ -5,7 +5,7 @@ $(document).ready(function() {
 	img.onload = function() {
 		draw(img);
 	};
-	img.src = "./img/road.jpg";
+	img.src = "./img/beach.jpg";
 
 	$('.blackAndWhite').on('click',function() {
 		canvasImage.blackWhite(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
@@ -21,12 +21,11 @@ $(document).ready(function() {
 	// 	CanvasImage.edge(imageData, 1080);
 	// 	context.putImageData(imageData, 0, 0);
 	// })
-	// $('.flip').click(function() {
-	// 	var context = $('#canvas')[0].getContext('2d');
-	// 	var imageData = context.getImageData(0, 0, 1080, 900);
-	// 	CanvasImage.colorFlip(imageData);
-	// 	context.putImageData(imageData, 0, 0);
-	// })
+
+	$('.flip').on('click',function() {
+		canvasImage.colorFlip(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+	});
+
 	// $('.sharpen').click(function() {
 	// 	var context = $('#canvas')[0].getContext('2d');
 	// 	var imageData = context.getImageData(0, 0, 1080, 900);
@@ -45,10 +44,22 @@ $(document).ready(function() {
 	// 	CanvasImage.medianFilter(imageData, 1080);
 	// 	context.putImageData(imageData, 0, 0);
 	// })
-	// $('.download').click(function() {
-	// 	var href = $('#canvas')[0].toDataURL('image/png').replace("image/png", "image/octet-stream");
-	// 	window.location.href = href;
-	// })
+
+	$('.removeOneColor').on('click',function () {
+		var colorData = {
+			R : 74,
+			G : 156,
+			B : 201
+		},
+		threshold = 50;
+		canvasImage.removeOneColor(0, 0,canvasImage.canvas.width,canvasImage.canvas.height,colorData,threshold);
+	});
+
+
+	$('.download').on('click',function() {
+		var href = $('#canvas')[0].toDataURL('image/png').replace("image/png", "image/octet-stream");
+		window.location.href = href;
+	})
 
 	$('.reset').on('click',function() {
 		canvasImage.reset();

@@ -9,24 +9,24 @@
 	}
 
 	var matrixData = {
-		gaussianBlur: [
+		gaussianBlurMatrix: [
 			[1, 4, 6, 4, 1],
 			[4, 16, 24, 16, 4],
 			[6, 24, 36, 24, 6],
 			[4, 16, 24, 26, 4],
 			[1, 4, 6, 4, 1],
 		],
-		edge: [
+		edgeMatrix: [
 			[2, -1, 2],
 			[-1, -4, -1],
 			[2, -1, 2],
 		],
-		detail: [
+		detailMatrix: [
 			[0, -1, 0],
 			[-1, 10, -1],
 			[0, -1, 0],
 		],
-		sharpen: [
+		sharpenMatrix: [
 			[-1, -1, -1],
 			[-1, 10, -1],
 			[-1, -1, -1],
@@ -144,18 +144,102 @@
 	}
 
 	function _gaussianBlur(imageData) {
-		var pixel = imageData.data;
-		var matrix = toMatrix(pixel, imageData.width);
-		var newMatrix = calculateByMatrix(matrix, matrixData);
-		var newpixel = decodeMatrix(newMatrix);
-		for (var i = 0, length = pixel.length; i < length - 4; i += 4) {
-			pixel[i] = newpixel[i];
-			pixel[i + 1] = newpixel[i + 1];
-			pixel[i + 2] = newpixel[i + 2];
-			pixel[i + 3] = newpixel[i + 3];
+		var pixes = imageData.data;
+		var width = imageData.width;
+		var height = imageData.height;
+		var gaussMatrix = [],
+			gaussSum = 0,
+			x, y,
+			r, g, b, a,
+			i, j, k, len;
+
+		var radius = 10;
+		var sigma = 5;
+
+		a = 1 / (Math.sqrt(2 * Math.PI) * sigma);
+		b = -1 / (2 * sigma * sigma);
+
+		//生成高斯矩阵
+		for (i = 0, x = -radius; x <= radius; x++, i++){
+			g = a * Math.exp(b * x * x);
+			gaussMatrix[i] = g;
+			gaussSum += g;
+		}
+
+		//归一化, 保证高斯矩阵的值在[0,1]之间
+		for (i = 0, len = gaussMatrix.length; i < len; i++) {
+			gaussMatrix[i] /= gaussSum;
+		}
+
+		//x 方向一维高斯运算
+		for (y = 0; y < height; y++) {
+			for (x = 0; x < width; x++) {
+				r = g = b = a = 0;
+				gaussSum = 0;
+				for(j = -radius; j <= radius; j++){
+					k = x + j;
+					if(k >= 0 && k < width){//确保 k 没超出 x 的范围
+						//r,g,b,a 四个一组
+						i = (y * width + k) * 4;
+						r += pixes[i] * gaussMatrix[j + radius];
+						g += pixes[i + 1] * gaussMatrix[j + radius];
+						b += pixes[i + 2] * gaussMatrix[j + radius];
+						// a += pixes[i + 3] * gaussMatrix[j];
+						gaussSum += gaussMatrix[j + radius];
+					}
+				}
+				i = (y * width + x) * 4;
+				// 除以 gaussSum 是为了消除处于边缘的像素, 高斯运算不足的问题
+				// console.log(gaussSum)
+				pixes[i] = r / gaussSum;
+				pixes[i + 1] = g / gaussSum;
+				pixes[i + 2] = b / gaussSum;
+				// pixes[i + 3] = a ;
+			}
+		}
+		//y 方向一维高斯运算
+		for (x = 0; x < width; x++) {
+			for (y = 0; y < height; y++) {
+				r = g = b = a = 0;
+				gaussSum = 0;
+				for(j = -radius; j <= radius; j++){
+					k = y + j;
+					if(k >= 0 && k < height){//确保 k 没超出 y 的范围
+						i = (k * width + x) * 4;
+						r += pixes[i] * gaussMatrix[j + radius];
+						g += pixes[i + 1] * gaussMatrix[j + radius];
+						b += pixes[i + 2] * gaussMatrix[j + radius];
+						// a += pixes[i + 3] * gaussMatrix[j];
+						gaussSum += gaussMatrix[j + radius];
+					}
+				}
+				i = (y * width + x) * 4;
+				pixes[i] = r / gaussSum;
+				pixes[i + 1] = g / gaussSum;
+				pixes[i + 2] = b / gaussSum;
+			}
 		}
 	}
 
+	function _colorFlip(imageData) {
+		var pixel = imageData.data;
+		for (var i = 0, length = pixel.length; i < length; i += 4) {
+			pixel[i] = 225 - pixel[i];
+			pixel[i + 1] = 225 - pixel[i + 1];
+			pixel[i + 2] = 225 - pixel[i + 2];
+		}
+	}
+
+	function _removeOneColor(imageData,colorData,threshold) {
+		var data = imageData.data;
+		for (var i = 0; i < data.length - 4; i+=4) {
+			if (Math.abs(data[i] - colorData.R) > threshold) continue;
+			if (Math.abs(data[i + 1] - colorData.G) > threshold) continue;
+			if (Math.abs(data[i + 2] - colorData.B) > threshold) continue;
+			data[i + 3] = 0;
+		}
+	}
+	
 	CanvasImage.prototype.blackWhite = function (dx, dy, dWidth, dHeight) {
 		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
 		_blackWhite(imageData);
@@ -168,11 +252,21 @@
 		this.ctx2d.putImageData(imageData,dx,dy);
 	};
 
+	CanvasImage.prototype.colorFlip = function (dx, dy, dWidth, dHeight) {
+		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
+		_colorFlip(imageData);
+		this.ctx2d.putImageData(imageData,dx,dy);
+	};
+
+	CanvasImage.prototype.removeOneColor = function (dx, dy, dWidth, dHeight,colorData,threshold) {
+		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
+		_removeOneColor(imageData,colorData);
+		this.ctx2d.putImageData(imageData,dx,dy);
+	};
+
+
 	// CanvasImage.prototype.edge = edge();
 
-
-	// CanvasImage.prototype.colorFlip = colorFlip();
-	//
 	// CanvasImage.prototype.sharpen = sharpen();
 	//
 	// CanvasImage.prototype.medianFilter = medianFilter();
