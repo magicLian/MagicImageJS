@@ -1,4 +1,4 @@
-# agicImageJS #M
+# MagicImageJS #
 
 A lightweight image processing library for Javascript , based on Canvas.
 
@@ -19,7 +19,7 @@ A lightweight image processing library for Javascript , based on Canvas.
 <script type="text/javascript" src="js/magicImage.js"></script>
  
 var canvas = document.getElementById("canvas");
-var	magicImage = new MagicImage(canvas);
+var magicImage = new MagicImage(canvas);
 magicImage.blackWhite(0, 0,magicImage.canvas.width,magicImage.canvas.height);
 ```
 
