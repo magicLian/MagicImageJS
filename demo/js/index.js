@@ -5,7 +5,7 @@ $(document).ready(function() {
 	img.onload = function() {
 		draw(img);
 	};
-	img.src = "./img/beach.jpg";
+	img.src = "./img/game.jpg";
 
 	$('.blackAndWhite').on('click',function() {
 		canvasImage.blackWhite(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
@@ -15,46 +15,40 @@ $(document).ready(function() {
 		canvasImage.gaussianBlur(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
 	});
 
-	// $('.edge').click(function() {
-	// 	var context = $('#canvas')[0].getContext('2d');
-	// 	var imageData = context.getImageData(0, 0, 1080, 900);
-	// 	CanvasImage.edge(imageData, 1080);
-	// 	context.putImageData(imageData, 0, 0);
-	// })
+	$('.edge').on('click',function() {
+		canvasImage.edge(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+	});
 
 	$('.flip').on('click',function() {
 		canvasImage.colorFlip(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
 	});
 
-	// $('.sharpen').click(function() {
-	// 	var context = $('#canvas')[0].getContext('2d');
-	// 	var imageData = context.getImageData(0, 0, 1080, 900);
-	// 	CanvasImage.sharpen(imageData, 1080);
-	// 	context.putImageData(imageData, 0, 0);
-	// })
-	// $('.histogramBlance').click(function() {
-	// 	var context = $('#canvas')[0].getContext('2d');
-	// 	var imageData = context.getImageData(0, 0, 1080, 900);
-	// 	CanvasImage.histogramBlanceWithColor(imageData);
-	// 	context.putImageData(imageData, 0, 0);
-	// })
-	// $('.medianFilter').click(function() {
-	// 	var context = $('#canvas')[0].getContext('2d');
-	// 	var imageData = context.getImageData(0, 0, 1080, 900);
-	// 	CanvasImage.medianFilter(imageData, 1080);
-	// 	context.putImageData(imageData, 0, 0);
-	// })
+	$('.sharpen').click(function() {
+		canvasImage.sharpen(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+	});
+
+	$('.medianFilter').click(function() {
+		canvasImage.medianFilter(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+	});
+
+	$('.histogramBlance').click(function() {
+		canvasImage.histogramBlance(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+	});
+
+	$('.histogramBlanceWithColor').click(function() {
+		canvasImage.histogramBlanceWithColor(0, 0,canvasImage.canvas.width,canvasImage.canvas.height);
+	})
+
 
 	$('.removeOneColor').on('click',function () {
 		var colorData = {
-			R : 74,
-			G : 156,
-			B : 201
+			R : 255,
+			G : 220,
+			B : 59
 		},
 		threshold = 50;
 		canvasImage.removeOneColor(0, 0,canvasImage.canvas.width,canvasImage.canvas.height,colorData,threshold);
 	});
-
 
 	$('.download').on('click',function() {
 		var href = $('#canvas')[0].toDataURL('image/png').replace("image/png", "image/octet-stream");

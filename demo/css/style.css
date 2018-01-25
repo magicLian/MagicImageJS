@@ -12,7 +12,7 @@
 
 .right {
     position: absolute;
-    left: 200px;
+    left: 250px;
     top: 110px;
 }
 
@@ -63,7 +63,7 @@
 }
 
 body {
-    background-color: #222;
+    background-color: #313131;
 }
 
 .loader {
@@ -80,7 +80,7 @@ body {
 
 .buttonarea {
     float: left;
-    background-color: #222;
+    background-color: #313131;
 }
 
 .buttonarea li {
@@ -89,19 +89,19 @@ body {
 
 .button {
     padding: 10px;
-    width: 150px;
+    width: 200px;
     height: auto;
     margin: 10px;
-    background-color: #222;
+    background-color: #8f8f8f;
     border-radius: 30px;
     border: 1px solid #999;
-    color: #999;
+    color: #ffffff;
     cursor: pointer;
     outline: none;
 }
 
 .button:hover {
-    background-color: #999;
+    background-color: #99282d;
     color: #222;
 }
 
