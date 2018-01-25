@@ -1,6 +1,6 @@
 ;(function (window, document, undefined) {
 
-	function CanvasImage(canvas) {
+	function MagicImage(canvas) {
 		this._canvas = cloneCanvas(canvas);
 		this.canvas = canvas;
 		this.ctx2d = this.canvas.getContext('2d');
@@ -474,64 +474,64 @@
 		}
 	}
 	
-	CanvasImage.prototype.blackWhite = function (dx, dy, dWidth, dHeight) {
+	MagicImage.prototype.blackWhite = function (dx, dy, dWidth, dHeight) {
 		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
 		_blackWhite(imageData);
 		this.ctx2d.putImageData(imageData,dx,dy);
 	};
 
-	CanvasImage.prototype.gaussianBlur = function (dx, dy, dWidth, dHeight) {
+	MagicImage.prototype.gaussianBlur = function (dx, dy, dWidth, dHeight) {
 		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
 		_gaussianBlur(imageData);
 		this.ctx2d.putImageData(imageData,dx,dy);
 	};
 
-	CanvasImage.prototype.colorFlip = function (dx, dy, dWidth, dHeight) {
+	MagicImage.prototype.colorFlip = function (dx, dy, dWidth, dHeight) {
 		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
 		_colorFlip(imageData);
 		this.ctx2d.putImageData(imageData,dx,dy);
 	};
 
-	CanvasImage.prototype.edge = function (dx, dy, dWidth, dHeight) {
+	MagicImage.prototype.edge = function (dx, dy, dWidth, dHeight) {
 		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
 		_edge(imageData);
 		this.ctx2d.putImageData(imageData,dx,dy);
 	};
 
-	CanvasImage.prototype.removeOneColor = function (dx, dy, dWidth, dHeight,colorData,threshold) {
+	MagicImage.prototype.removeOneColor = function (dx, dy, dWidth, dHeight,colorData,threshold) {
 		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
 		_removeOneColor(imageData,colorData,threshold);
 		this.ctx2d.putImageData(imageData,dx,dy);
 	};
 
-	CanvasImage.prototype.sharpen = function (dx, dy, dWidth, dHeight) {
+	MagicImage.prototype.sharpen = function (dx, dy, dWidth, dHeight) {
 		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
 		_sharpen(imageData);
 		this.ctx2d.putImageData(imageData,dx,dy);
 	};
 
-	CanvasImage.prototype.medianFilter = function (dx, dy, dWidth, dHeight) {
+	MagicImage.prototype.medianFilter = function (dx, dy, dWidth, dHeight) {
 		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
 		_medianFilter(imageData);
 		this.ctx2d.putImageData(imageData,dx,dy);
 	};
 
-	CanvasImage.prototype.histogramBlance = function (dx, dy, dWidth, dHeight){
+	MagicImage.prototype.histogramBlance = function (dx, dy, dWidth, dHeight){
 		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
 		_histogramBlance(imageData);
 		this.ctx2d.putImageData(imageData,dx,dy);
 	};
 
-	CanvasImage.prototype.histogramBlanceWithColor = function (dx, dy, dWidth, dHeight){
+	MagicImage.prototype.histogramBlanceWithColor = function (dx, dy, dWidth, dHeight){
 		var imageData = this.ctx2d.getImageData(dx, dy, dWidth, dHeight);
 		_histogramBlanceWithColor(imageData);
 		this.ctx2d.putImageData(imageData,dx,dy);
 	};
 
-	CanvasImage.prototype.reset = function(){
+	MagicImage.prototype.reset = function(){
 		this.parent.empty().append($(this._canvas));
 	};
 
-	window.CanvasImage = CanvasImage;
+	window.MagicImage = MagicImage;
 
 })(window, document, undefined);
