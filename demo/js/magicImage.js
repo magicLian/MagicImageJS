@@ -38,8 +38,7 @@
 		var context = newCanvas.getContext('2d');
 		newCanvas.width = oldCanvas.width;
 		newCanvas.height = oldCanvas.height;
-		var oldImageData = oldCanvas.getContext('2d').getImageData(0,0,oldCanvas.width,oldCanvas.height);
-		context.putImageData(oldImageData,0,0);
+		context.drawImage(oldCanvas,0,0,oldCanvas.width,oldCanvas.height);
 		return newCanvas;
 	}
 
@@ -529,7 +528,9 @@
 	};
 
 	MagicImage.prototype.reset = function(){
-		this.parent.empty().append($(this._canvas));
+		this.canvas = cloneCanvas(this._canvas);
+		this.ctx2d = this.canvas.getContext('2d');
+		this.parent.empty().append(this.canvas);
 	};
 
 	window.MagicImage = MagicImage;
